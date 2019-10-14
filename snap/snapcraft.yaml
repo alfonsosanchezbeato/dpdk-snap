@@ -12,7 +12,7 @@ parts:
   dpdk:
     plugin: python
     python-version: python2
-    source: git://dpdk.org/dpdk
+    source: https://github.com/Mellanox/DPDK-18.11-for-Ubuntu-18.04.git
     source-type: git
     # source-tag: v17.11 # LTS Version, comment out or change tag to what version you require. 
     build-packages:
@@ -21,6 +21,8 @@ parts:
       - libnuma-dev
       - pkg-config
       - libelf-dev
+      - libibverbs-dev
+      - libmnl-dev
     stage-packages:
       - libnuma1
       - pciutils
@@ -38,6 +40,9 @@ parts:
           exit 1
           ;;
       esac
+      # Use mlx5 driver
+      sed -i 's/CONFIG_RTE_LIBRTE_MLX5_PMD=.*/CONFIG_RTE_LIBRTE_MLX5_PMD=y/' config/common_base
+      sed -i 's/CONFIG_RTE_LIBRTE_MLX5_DEBUG=.*/CONFIG_RTE_LIBRTE_MLX5_DEBUG=y/' config/common_base
       # RTE_KERNELDIR is only needed if kernel version is not the same as installed on build host
       make install T="$target" \
            DESTDIR="$SNAPCRAFT_PART_INSTALL"/dpdk \
