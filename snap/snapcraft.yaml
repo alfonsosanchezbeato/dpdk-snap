@@ -48,6 +48,10 @@ parts:
            DESTDIR="$SNAPCRAFT_PART_INSTALL"/dpdk \
            RTE_KERNELDIR=/usr/src/linux-headers-"$(uname -r)"
 
+layout:
+  /var/tmp:
+    bind: $SNAP_DATA/tmp
+
 apps:
   testpmd:
     command: dpdk/bin/testpmd
