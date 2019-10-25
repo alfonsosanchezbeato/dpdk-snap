@@ -20,7 +20,7 @@ sudo snap connect dpdk-wililupy:hardware-observe core:hardware-observe
 sudo snap connect dpdk-wililupy:process-control core:process-control
 sudo snap connect dpdk-wililupy:system-observe core:system-observe
 ```
-Then you can test by doing the following:
+Then you can test on x86 by doing the following:
 
 ```
 sudo -s
@@ -29,6 +29,13 @@ mount -t hugetlbfs nodev /mnt/huge
 echo 1024 > /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages
 dpdk-wililupy.testpmd -- -i
 ```
+
+On Mellanox SmartNICs, add these parameters to the kernel command line instead:
+
+    default_hugepagesz=2097152 hugepagesz=2097152 hugepages=1024
+
+Make sure you have compiled the snap on a chroot with the appropriate Mellanox libraries installed.
+
 You can also install this from the snap store in the edge and beta channels:
 
 `sudo snap install dpdk-wililupy --beta --devmode`
